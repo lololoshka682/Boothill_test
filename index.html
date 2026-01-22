@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Чат с Бутхиллом</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="dark-theme">
+    <!-- Скрытые аудио элементы для звуков Telegram -->
+    <audio id="messageSentSound" preload="auto">
+        <source src="Звук отправки iMessage.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="messageReceivedSound" preload="auto">
+        <source src="Звук отправки iMessage.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="notificationSound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-notification-bell-592.mp3" type="audio/mpeg">
+    </audio>
+    
+    <div class="container">
+        <!-- Боковая панель с контактов -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Контакты</h1>
+                <div class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+            
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" placeholder="Поиск" disabled>
+            </div>
+            
+            <div class="contacts-list">
+                <!-- Контакт Бутхилл будет добавлен через JavaScript -->
+            </div>
+            
+            <!-- Кнопка разработчики -->
+            <div class="developers-section" id="developersSection">
+                <button class="developers-btn" id="developersBtn">
+                    <i class="fas fa-code"></i> Разработчики
+                </button>
+            </div>
+            
+            <div class="sidebar-footer">
+                <p>Всего контактов: <span id="contactCount">0</span></p>
+            </div>
+        </aside>
+        
+        <!-- Основная область чата -->
+        <main class="chat-area">
+            <div class="chat-placeholder" id="chatPlaceholder">
+                <div class="welcome-content">
+                    <div class="welcome-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h2>Добро пожаловать в чат!</h2>
+                    <p>Выберите контакт из списка слева, чтобы начать общение</p>
+                </div>
+            </div>
+            
+            <!-- Заголовок чата (скрыт по умолчанию) -->
+            <div class="chat-header" id="chatHeader" style="display: none;">
+                <div class="chat-contact-info">
+                    <div class="contact-avatar">
+                        <img src="https://i.pinimg.com/originals/99/e4/16/99e4168da722e73f4eef97d724e79a69.jpg" alt="Аватар Бутхилла" id="chatAvatar">
+                    </div>
+                    <div class="contact-details">
+                        <h3 id="chatContactName">Бутхилл</h3>
+                        <p id="chatStatus">в сети</p>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <button class="chat-action-btn" id="exitChatBtn" title="Выйти в главное меню">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="chat-action-btn" id="restartChatBtn" title="Перезапустить диалог">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Индикатор печатания (скрыт по умолчанию) -->
+            <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                <div class="typing-content">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span class="typing-text">Бутхилл печатает...</span>
+                </div>
+            </div>
+            
+            <!-- Область сообщений (скрыта по умолчанию) -->
+            <div class="chat-messages-container" id="chatMessagesContainer" style="display: none;">
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Сообщения будут появляться здесь -->
+                </div>
+                
+                <!-- Панель выбора диалога -->
+                <div class="dialog-options-container" id="dialogOptionsContainer">
+                    <!-- Кнопки выбора диалога будут добавляться здесь через JavaScript -->
+                </div>
+                
+                <!-- Кнопка перезапуска диалога -->
+                <div class="restart-dialog-container" id="restartDialogContainer" style="display: none;">
+                    <button class="restart-dialog-btn" id="restartDialogBtn">
+                        <i class="fas fa-redo"></i>
+                        Перезапустить диалог
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Модальное окно разработчиков -->
+    <div class="modal-overlay" id="developersModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Разработчики</h3>
+                <button class="modal-close" id="closeDevelopersModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content">
+                <div class="developer-card">
+                    <div class="developer-avatar">
+                        <img src="https://i.pinimg.com/originals/38/2a/fa/382afa29257319566ba8144fbdcb903f.jpg" alt="Сырник" onerror="this.onerror=null; this.src='https://via.placeholder.com/100'">
+                    </div>
+                    <div class="developer-info">
+                        <h4 class="developer-name">Сырник</h4>
+                        <p class="developer-username">@kinich_topic</p>
+                        <p class="developer-role">Главный разработчик</p>
+                        <p class="developer-description">Создатель данного веб.сайта и по совместительству владелец канала https://t.me/every_day_Boothill. </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="closeDevelopersModalBtn">Закрыть</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
